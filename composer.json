@@ -17,7 +17,7 @@
     },
     "require-dev": {
         "phpunit/php-timer": "^2.1",
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^8.5 || ^9.4"
     },
     "autoload": {
         "psr-4": {
