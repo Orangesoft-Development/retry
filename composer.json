@@ -1,0 +1,40 @@
+{
+    "name": "orangesoft/retry",
+    "description": "Retry tool for exceptions",
+    "keywords": ["retry", "tool", "exception", "sleeper", "goto"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aleksandr Denisyuk",
+            "email": "a@denisyuk.by",
+            "homepage": "https://denisyuk.by/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2 || ^8.0",
+        "orangesoft/backoff": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/php-timer": "^2.1",
+        "phpunit/phpunit": "^8.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Orangesoft\\Retry\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Orangesoft\\Retry\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --colors=always"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    }
+}
