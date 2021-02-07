@@ -17,3 +17,61 @@ composer require orangesoft/retry
 ```
 
 This package requires PHP 7.2 or later.
+
+## Quick usage
+
+By default max attempts is 5, a sleeper is disabled and a exception classifier catch all exceptions. See below how configure a retry tool:
+
+```php
+<?php
+
+use Orangesoft\Retry\Retry;
+use Orangesoft\Retry\RetryBuilder;
+use Orangesoft\Retry\RetryInterface;
+use Orangesoft\Retry\ExceptionClassifier\ExceptionClassifier;
+use Orangesoft\Retry\Sleeper\DummySleeper;
+
+/** @var RetryInterface $retry */
+$retry = (new RetryBuilder())
+    ->setMaxAttempts(5)
+    ->setExceptionClassifier(new ExceptionClassifier())
+    ->setSleeper(new DummySleeper())
+    ->build()
+;
+```
+
+The easiest way to create the retry tool with default options is to use a `createFromDefault()` method.
+
+```php
+$retry = Retry::createFromDefault();
+```
+
+The retry tool's interface is very similar to `call_user_func_array()` function in that its method `call()` also accepts a callback and args.
+
+```php
+$callback = function (int $min, int $max): int {
+    $random = mt_rand($min, $max);
+    
+    if (0 === $random % 2) {
+        throw new \RuntimeException();
+    }
+    
+    return $random;
+};
+
+$args = [5, 10];
+```
+
+Just call `call()` method:
+
+```php
+$retry->call($callback, $args);
+```
+
+You can immediately change the configuration of the retry tool before call the callback:
+
+```php
+$retry->withMaxAttempts(10)->call($callback, $args);
+```
+
+The same can be done for the sleeper and the exception classifier.
