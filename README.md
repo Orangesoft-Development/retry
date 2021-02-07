@@ -27,11 +27,9 @@ By default max attempts is 5, a sleeper is disabled and a exception classifier c
 
 use Orangesoft\Retry\Retry;
 use Orangesoft\Retry\RetryBuilder;
-use Orangesoft\Retry\RetryInterface;
 use Orangesoft\Retry\ExceptionClassifier\ExceptionClassifier;
 use Orangesoft\Retry\Sleeper\DummySleeper;
 
-/** @var RetryInterface $retry */
 $retry = (new RetryBuilder())
     ->setMaxAttempts(5)
     ->setExceptionClassifier(new ExceptionClassifier())
@@ -46,7 +44,7 @@ The easiest way to create the retry tool with default options is to use a `creat
 $retry = Retry::createFromDefault();
 ```
 
-The retry tool is very similar to `call_user_func_array()` function in that its method `call()` also accepts a callback and args.
+The retry tool is very similar to `call_user_func_array()` function in that its method `call()` also accepts a callback and arguments.
 
 ```php
 /**
@@ -70,7 +68,7 @@ $callback = function (int $min, int $max): int {
 $args = [5, 10];
 ```
 
-Now just call the `call()` method:
+Now just call the `call()` method. The retry tool will catch all exceptions 5 times and start over:
 
 ```php
 $retry->call($callback, $args);
