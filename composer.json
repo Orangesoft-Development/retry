@@ -32,7 +32,6 @@
     "scripts": {
         "test": "vendor/bin/phpunit --colors=always"
     },
-    "prefer-stable": true,
     "config": {
         "sort-packages": true
     }
