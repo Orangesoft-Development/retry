@@ -27,14 +27,40 @@ final class Retry implements RetryInterface
         $this->sleeper = $retryBuilder->getSleeper();
     }
 
-    /**
-     * @param callable $callback
-     * @param mixed[] $args
-     *
-     * @return mixed
-     *
-     * @throws
-     */
+    public static function createFromDefault(): RetryInterface
+    {
+        $retryBuilder = new RetryBuilder();
+
+        return new Retry($retryBuilder);
+    }
+
+    public function withMaxAttempts(int $maxAttempts): RetryInterface
+    {
+        $retry = clone $this;
+
+        $retry->maxAttempts = $maxAttempts;
+
+        return $retry;
+    }
+
+    public function withExceptionClassifier(ExceptionClassifierInterface $exceptionClassifier): RetryInterface
+    {
+        $retry = clone $this;
+
+        $retry->exceptionClassifier = $exceptionClassifier;
+
+        return $retry;
+    }
+
+    public function withSleeper(SleeperInterface $sleeper): RetryInterface
+    {
+        $retry = clone $this;
+
+        $retry->sleeper = $sleeper;
+
+        return $retry;
+    }
+
     public function call(callable $callback, array $args = [])
     {
         $attempts = $this->maxAttempts;

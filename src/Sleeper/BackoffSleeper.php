@@ -3,12 +3,13 @@
 namespace Orangesoft\Retry\Sleeper;
 
 use Orangesoft\Backoff\Sleeper\Sleeper;
+use Orangesoft\Backoff\Sleeper\SleeperInterface as BackoffSleeperInterface;
 use Orangesoft\Backoff\BackoffInterface;
 
 class BackoffSleeper implements SleeperInterface
 {
     /**
-     * @var BackoffInterface
+     * @var BackoffSleeperInterface
      */
     private $backoffSleeper;
 
