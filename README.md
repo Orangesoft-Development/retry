@@ -68,7 +68,7 @@ $callback = function (int $min, int $max): int {
 $args = [5, 10];
 ```
 
-Now just call the `call()` method. The retry tool will catch all exceptions 5 times and start over:
+Now just call the `call()` method. Its will catch all exceptions 5 times and start over if exception will be throw or will return a result:
 
 ```php
 $retry->call($callback, $args);
