@@ -39,7 +39,7 @@ class RetryTest extends TestCase
     public function testRetryFail(): void
     {
         $exceptionClassifier = new ExceptionClassifier([
-            \Exception::class,
+            \RuntimeException::class,
         ]);
 
         $retry = (new RetryBuilder())
@@ -50,13 +50,13 @@ class RetryTest extends TestCase
 
         $counter = 0;
 
-        $this->expectException(\Exception::class);
+        $this->expectException(\RuntimeException::class);
 
         try {
             $retry->call(function () use (&$counter) {
-                throw new \Exception('OK', $counter++);
+                throw new \RuntimeException('OK', $counter++);
             });
-        } catch (\Exception $e) {
+        } catch (\RuntimeException $e) {
             $this->assertSame('OK', $e->getMessage());
             $this->assertSame(5, $e->getCode());
 
@@ -69,7 +69,7 @@ class RetryTest extends TestCase
         $sleepAttemptsCounter = new SleepAttemptsCounter();
 
         $exceptionClassifier = new ExceptionClassifier([
-            \Exception::class,
+            \RuntimeException::class,
         ]);
 
         $retry = (new RetryBuilder())
@@ -81,9 +81,9 @@ class RetryTest extends TestCase
 
         try {
             $retry->call(function () {
-                throw new \Exception();
+                throw new \RuntimeException();
             });
-        } catch (\Exception $e) {
+        } catch (\RuntimeException $e) {
             $this->assertSame(4, $sleepAttemptsCounter->getAttemptsCount());
         }
     }

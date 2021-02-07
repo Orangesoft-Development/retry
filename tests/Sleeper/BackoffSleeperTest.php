@@ -23,7 +23,7 @@ class BackoffSleeperTest extends TestCase
 
         $backoffSleeper->sleep(0);
 
-        $milliseconds = $timer->stop() * 1000 * 1000;
+        $milliseconds = $timer->stop() * 1000;
 
         $this->assertGreaterThanOrEqual(500, $milliseconds);
         $this->assertInstanceOf(SleeperInterface::class, $backoffSleeper);

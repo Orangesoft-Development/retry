@@ -7,19 +7,29 @@ use Orangesoft\Retry\ExceptionClassifier\ExceptionClassifier;
 
 class ExceptionClassifierTest extends TestCase
 {
+    public function testClassifyDefault(): void
+    {
+        $exceptionClassifier = new ExceptionClassifier();
+
+        $this->assertTrue($exceptionClassifier->classify(new \Error()));
+        $this->assertTrue($exceptionClassifier->classify(new \Exception()));
+    }
+
     public function testClassifySuccess(): void
     {
         $exceptionClassifier = new ExceptionClassifier([
-            \Exception::class,
+            \RuntimeException::class,
         ]);
 
-        $this->assertTrue($exceptionClassifier->classify(new \Exception()));
+        $this->assertTrue($exceptionClassifier->classify(new \RuntimeException()));
     }
 
     public function testClassifyFail(): void
     {
-        $exceptionClassifier = new ExceptionClassifier();
+        $exceptionClassifier = new ExceptionClassifier([
+            \RuntimeException::class,
+        ]);
 
-        $this->assertFalse($exceptionClassifier->classify(new \Exception()));
+        $this->assertFalse($exceptionClassifier->classify(new \InvalidArgumentException()));
     }
 }
