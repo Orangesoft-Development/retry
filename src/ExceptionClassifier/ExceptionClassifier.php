@@ -12,7 +12,7 @@ class ExceptionClassifier implements ExceptionClassifierInterface
     /**
      * @param string[] $exceptionTypes
      */
-    public function __construct(array $exceptionTypes = [])
+    public function __construct(array $exceptionTypes = [\Error::class, \Exception::class])
     {
         foreach ($exceptionTypes as $exceptionType) {
             $this->addExceptionType($exceptionType);
