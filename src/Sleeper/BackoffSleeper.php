@@ -2,6 +2,7 @@
 
 namespace Orangesoft\Retry\Sleeper;
 
+use Orangesoft\Backoff\Sleeper\Sleeper;
 use Orangesoft\Backoff\BackoffInterface;
 
 class BackoffSleeper implements SleeperInterface
@@ -9,19 +10,15 @@ class BackoffSleeper implements SleeperInterface
     /**
      * @var BackoffInterface
      */
-    private $backoff;
+    private $backoffSleeper;
 
     public function __construct(BackoffInterface $backoff)
     {
-        $this->backoff = $backoff;
+        $this->backoffSleeper = new Sleeper($backoff);
     }
 
     public function sleep(int $attempt): void
     {
-        $backoffTime = $this->backoff->generate($attempt);
-
-        $microseconds = (int) $backoffTime->toMicroseconds();
-
-        usleep($microseconds);
+        $this->backoffSleeper->sleep($attempt);
     }
 }
