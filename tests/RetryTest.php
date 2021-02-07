@@ -3,14 +3,49 @@
 namespace Orangesoft\Retry\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Orangesoft\Retry\Retry;
 use Orangesoft\Retry\RetryBuilder;
+use Orangesoft\Retry\RetryInterface;
 use Orangesoft\Retry\ExceptionClassifier\ExceptionClassifier;
+use Orangesoft\Retry\Sleeper\DummySleeper;
 
 class RetryTest extends TestCase
 {
-    public function testRetrySignature(): void
+    public function testCreateFromDefault(): void
     {
-        $retry = (new RetryBuilder())->setMaxAttempts(1)->build();
+        $retry = Retry::createFromDefault();
+
+        $this->assertInstanceOf(RetryInterface::class, $retry);
+    }
+
+    public function testWithMaxAttempts(): void
+    {
+        $retry = Retry::createFromDefault()->withMaxAttempts(5);
+
+        $this->assertInstanceOf(RetryInterface::class, $retry);
+    }
+
+    public function testWithExceptionClassifier(): void
+    {
+        $exceptionClassifier = new ExceptionClassifier();
+
+        $retry = Retry::createFromDefault()->withExceptionClassifier($exceptionClassifier);
+
+        $this->assertInstanceOf(RetryInterface::class, $retry);
+    }
+
+    public function testWithSleeper(): void
+    {
+        $sleeper = new DummySleeper();
+
+        $retry = Retry::createFromDefault()->withSleeper($sleeper);
+
+        $this->assertInstanceOf(RetryInterface::class, $retry);
+    }
+
+    public function testCallSignature(): void
+    {
+        $retry = Retry::createFromDefault()->withMaxAttempts(1);
 
         $args = [
             'value1',
@@ -25,9 +60,9 @@ class RetryTest extends TestCase
         $retry->call($callback, $args);
     }
 
-    public function testRetrySuccess(): void
+    public function testCallSuccess(): void
     {
-        $retry = (new RetryBuilder())->build();
+        $retry = Retry::createFromDefault();
 
         $result = $retry->call(function () {
             return 42;
@@ -36,7 +71,7 @@ class RetryTest extends TestCase
         $this->assertSame(42, $result);
     }
 
-    public function testRetryFail(): void
+    public function testCallFail(): void
     {
         $exceptionClassifier = new ExceptionClassifier([
             \RuntimeException::class,
