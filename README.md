@@ -20,7 +20,7 @@ This package requires PHP 7.2 or later.
 
 ## Quick usage
 
-By default max attempts is 5, a sleeper is disabled and a exception classifier catch all exceptions:
+By default max attempts is 5, a exception classifier catch all exceptions and a sleeper is disabled:
 
 ```php
 <?php
@@ -38,13 +38,13 @@ $retry = (new RetryBuilder())
 ;
 ```
 
-The easiest way to create the retry tool with default options is to use a `createFromDefault()` method.
+The easiest way to create a retry tool with default options is to use a `createFromDefault()` method:
 
 ```php
 $retry = Retry::createFromDefault();
 ```
 
-The retry tool is very similar to `call_user_func_array()` function in that its method `call()` also accepts a callback and arguments.
+The retry tool is very similar to `call_user_func_array()` function in that its method `call()` also passes a callback and arguments.
 
 ```php
 /**
@@ -77,7 +77,9 @@ $retry->call($callback, $args);
 You can immediately change the configuration of the retry tool before call the callback:
 
 ```php
-$retry->withMaxAttempts(10)->call($callback, $args);
+$retry->withMaxAttempts(10)->call(function () {
+    throw new \RuntimeException();
+});
 ```
 
 The same can be done for the sleeper and the exception classifier.
