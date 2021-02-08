@@ -1,7 +1,7 @@
 {
     "name": "orangesoft/retry",
     "description": "Retry tool for exceptions",
-    "keywords": ["retry", "tool", "exception", "sleeper", "goto"],
+    "keywords": ["retry", "tool", "exception", "goto"],
     "license": "MIT",
     "authors": [
         {
