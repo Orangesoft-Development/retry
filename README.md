@@ -17,3 +17,69 @@ composer require orangesoft/retry
 ```
 
 This package requires PHP 7.2 or later.
+
+## Quick usage
+
+By default max attempts is 5, ExceptionClassifier catch all exceptions and Sleeper is disabled:
+
+```php
+<?php
+
+use Orangesoft\Retry\Retry;
+use Orangesoft\Retry\RetryBuilder;
+use Orangesoft\Retry\ExceptionClassifier\ExceptionClassifier;
+use Orangesoft\Retry\Sleeper\DummySleeper;
+
+$retry = (new RetryBuilder())
+    ->setMaxAttempts(5)
+    ->setExceptionClassifier(new ExceptionClassifier())
+    ->setSleeper(new DummySleeper())
+    ->build()
+;
+```
+
+The easiest way to create Retry with default options is to use a `createFromDefault()` method:
+
+```php
+$retry = Retry::createFromDefault();
+```
+
+Retry is very similar to `call_user_func_array()` function in that its method `call()` also passes a callback and arguments.
+
+```php
+/**
+ * @param int $min
+ * @param int $max
+ * 
+ * @return int
+ * 
+ * @throws \RuntimeException
+ */
+$callback = function (int $min, int $max): int {
+    $random = mt_rand($min, $max);
+    
+    if (0 === $random % 2) {
+        throw new \RuntimeException();
+    }
+    
+    return $random;
+};
+
+$args = [5, 10];
+```
+
+Now just call the `call()` method. Its will catch all exceptions 5 times and start over if exception will be throw or will return a result:
+
+```php
+$retry->call($callback, $args);
+```
+
+You can immediately change configuration of Retry before call:
+
+```php
+$retry->withMaxAttempts(10)->call(function () {
+    throw new \RuntimeException();
+});
+```
+
+The same can be done for Sleeper and ExceptionClassifier.
