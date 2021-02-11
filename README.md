@@ -47,14 +47,6 @@ $retry = Retry::createFromDefault();
 Retry is very similar to `call_user_func_array()` function in that its method `call()` also passes a callback and arguments.
 
 ```php
-/**
- * @param int $min
- * @param int $max
- * 
- * @return int
- * 
- * @throws \RuntimeException
- */
 $callback = function (int $min, int $max): int {
     $random = mt_rand($min, $max);
     
