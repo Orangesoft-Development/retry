@@ -74,4 +74,4 @@ $retry->withMaxAttempts(10)->call(function () {
 });
 ```
 
-The same can be done for Sleeper and ExceptionClassifier.
+The same can be done for ExceptionClassifier and Sleeper.
