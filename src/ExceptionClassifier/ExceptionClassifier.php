@@ -12,14 +12,16 @@ class ExceptionClassifier implements ExceptionClassifierInterface
     /**
      * @param string[] $exceptionTypes
      */
-    public function __construct(array $exceptionTypes = [\Error::class, \Exception::class])
-    {
+    public function __construct(array $exceptionTypes = [
+        \Error::class,
+        \Exception::class,
+    ]) {
         foreach ($exceptionTypes as $exceptionType) {
-            $this->addExceptionType($exceptionType);
+            $this->add($exceptionType);
         }
     }
 
-    private function addExceptionType(string $exceptionType): void
+    private function add(string $exceptionType): void
     {
         if (!class_exists($exceptionType) || !is_a($exceptionType, \Throwable::class, true)) {
             throw new \InvalidArgumentException(
