@@ -38,7 +38,7 @@ $retry = (new RetryBuilder())
 ;
 ```
 
-The easiest way to create Retry with default options is to use a `createFromDefault()` method:
+The easiest way to get instance Retry with default options is to use a `createFromDefault()` static method:
 
 ```php
 $retry = Retry::createFromDefault();
@@ -51,7 +51,7 @@ $callback = function (int $min, int $max): int {
     $random = mt_rand($min, $max);
     
     if (0 === $random % 2) {
-        throw new \RuntimeException();
+        throw new \Exception();
     }
     
     return $random;
@@ -60,17 +60,17 @@ $callback = function (int $min, int $max): int {
 $args = [5, 10];
 ```
 
-Now just call the `call()` method. Its will catch all exceptions 5 times and start over if exception will be throw or will return a result:
+Now just call the `call()` method. It will catch all exceptions 5 times and start over if exception is thrown or returns the following result:
 
 ```php
 $retry->call($callback, $args);
 ```
 
-You can immediately change configuration of Retry before call:
+You can  change configuration of Retry before call instantaneously:
 
 ```php
 $retry->withMaxAttempts(10)->call(function () {
-    throw new \RuntimeException();
+    throw new \Exception();
 });
 ```
 
