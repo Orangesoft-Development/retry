@@ -10,8 +10,8 @@ class CallbackSleeperTest extends TestCase
 {
     public function testSleep(): void
     {
-        $sleeper = new CallbackSleeper(function () {
-            usleep(500 * 1000);
+        $sleeper = new CallbackSleeper(function (int $attempt) {
+            usleep(500 * 1000 * ($attempt + 1));
         });
 
         $timer = new Timer();
@@ -22,6 +22,6 @@ class CallbackSleeperTest extends TestCase
 
         $milliseconds = $timer->stop() * 1000;
 
-        $this->assertGreaterThanOrEqual(500, $milliseconds);
+        $this->assertGreaterThanOrEqual(1500, $milliseconds);
     }
 }
