@@ -7,15 +7,20 @@ class ExceptionClassifier implements ExceptionClassifierInterface
     /**
      * @var string[]
      */
-    private $exceptionTypes = [];
+    private $exceptionTypes;
 
     /**
      * @param string[] $exceptionTypes
      */
-    public function __construct(array $exceptionTypes = [
-        \Error::class,
-        \Exception::class,
-    ]) {
+    public function __construct(array $exceptionTypes = [])
+    {
+        if (0 === count($exceptionTypes)) {
+            $exceptionTypes = [
+                \Error::class,
+                \Exception::class,
+            ];
+        }
+
         foreach ($exceptionTypes as $exceptionType) {
             $this->add($exceptionType);
         }
@@ -25,17 +30,17 @@ class ExceptionClassifier implements ExceptionClassifierInterface
     {
         if (!class_exists($exceptionType) || !is_a($exceptionType, \Throwable::class, true)) {
             throw new \InvalidArgumentException(
-                sprintf('Exception type %s is invalid', $exceptionType)
+                sprintf('Exception type must be a class that exists and can be thrown, "%s" given.', get_debug_type($exceptionType))
             );
         }
 
         $this->exceptionTypes[] = $exceptionType;
     }
 
-    public function classify(\Throwable $e): bool
+    public function classify(\Throwable $throwable): bool
     {
         foreach ($this->exceptionTypes as $exceptionType) {
-            if ($e instanceof $exceptionType) {
+            if ($throwable instanceof $exceptionType) {
                 return true;
             }
         }

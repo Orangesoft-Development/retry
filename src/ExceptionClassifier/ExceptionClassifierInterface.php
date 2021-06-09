@@ -4,5 +4,5 @@ namespace Orangesoft\Retry\ExceptionClassifier;
 
 interface ExceptionClassifierInterface
 {
-    public function classify(\Throwable $e): bool;
+    public function classify(\Throwable $throwable): bool;
 }
