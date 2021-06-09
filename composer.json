@@ -1,7 +1,7 @@
 {
     "name": "orangesoft/retry",
     "description": "Retry tool for exceptions",
-    "keywords": ["retry", "tool", "exception", "goto"],
+    "keywords": ["retry", "tool", "exception", "sleep", "goto"],
     "license": "MIT",
     "authors": [
         {
@@ -12,13 +12,12 @@
         }
     ],
     "require": {
-        "php": "^7.2 || ^8.0"
+        "php": "^7.2 || ^8.0",
+        "symfony/polyfill-php80": "^1.23"
     },
     "require-dev": {
+        "phpunit/php-timer": "^2.1",
         "phpunit/phpunit": "^8.5 || ^9.4"
-    },
-    "suggest": {
-        "orangesoft/backoff": "Allows to use Sleeper"
     },
     "autoload": {
         "psr-4": {
