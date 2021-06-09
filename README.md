@@ -38,39 +38,31 @@ $retry = (new RetryBuilder())
 ;
 ```
 
-The easiest way to get instance Retry with default options is to use a `createFromDefault()` static method:
+You can also get an instance in a easier way with default options:
 
 ```php
-$retry = Retry::createFromDefault();
+$retry = Retry::create();
 ```
 
-Retry is very similar to `call_user_func_array()` function in that its method `call()` also passes a callback and arguments.
+Put the code in a callback function and call it:
 
 ```php
-$callback = function (int $min, int $max): int {
-    $random = mt_rand($min, $max);
-    
+$retry->call(function (): int {
+    $random = mt_rand(1, 10);
+        
     if (0 === $random % 2) {
-        throw new \Exception();
+        throw new \RuntimeException();
     }
-    
+        
     return $random;
-};
-
-$args = [5, 10];
+});
 ```
 
-Now just call the `call()` method. It will catch all exceptions 5 times and start over if exception is thrown or returns the following result:
-
-```php
-$retry->call($callback, $args);
-```
-
-You can  change configuration of Retry before call instantaneously:
+Change options before call:
 
 ```php
 $retry->withMaxAttempts(10)->call(function () {
-    throw new \Exception();
+    throw new \RuntimeException();
 });
 ```
 
