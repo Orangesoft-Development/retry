@@ -27,14 +27,14 @@ final class Retry implements RetryInterface
         $this->sleeper = $retryBuilder->getSleeper();
     }
 
-    public static function createFromDefault(): RetryInterface
+    public static function create(): self
     {
-        $retryBuilder = new RetryBuilder();
+        $builder = new RetryBuilder();
 
-        return new Retry($retryBuilder);
+        return new Retry($builder);
     }
 
-    public function withMaxAttempts(int $maxAttempts): RetryInterface
+    public function withMaxAttempts(int $maxAttempts): self
     {
         $retry = clone $this;
 
@@ -43,7 +43,7 @@ final class Retry implements RetryInterface
         return $retry;
     }
 
-    public function withExceptionClassifier(ExceptionClassifierInterface $exceptionClassifier): RetryInterface
+    public function withExceptionClassifier(ExceptionClassifierInterface $exceptionClassifier): self
     {
         $retry = clone $this;
 
@@ -52,7 +52,7 @@ final class Retry implements RetryInterface
         return $retry;
     }
 
-    public function withSleeper(SleeperInterface $sleeper): RetryInterface
+    public function withSleeper(SleeperInterface $sleeper): self
     {
         $retry = clone $this;
 
@@ -61,6 +61,14 @@ final class Retry implements RetryInterface
         return $retry;
     }
 
+    /**
+     * @param callable $callback
+     * @param mixed[] $args
+     *
+     * @return mixed
+     *
+     * @throws \Throwable
+     */
     public function call(callable $callback, array $args = [])
     {
         $attempts = $this->maxAttempts;
@@ -69,9 +77,9 @@ final class Retry implements RetryInterface
 
         try {
             return $callback(...$args);
-        } catch (\Throwable $e) {
-            if (0 === $attempts || !$this->exceptionClassifier->classify($e)) {
-                throw $e;
+        } catch (\Throwable $throwable) {
+            if (0 === $attempts || !$this->exceptionClassifier->classify($throwable)) {
+                throw $throwable;
             }
 
             $this->sleeper->sleep($this->maxAttempts - $attempts);

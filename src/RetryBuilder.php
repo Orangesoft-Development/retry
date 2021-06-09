@@ -65,7 +65,7 @@ class RetryBuilder
         return $this->sleeper;
     }
 
-    public function build(): RetryInterface
+    public function build(): Retry
     {
         return new Retry($this);
     }
