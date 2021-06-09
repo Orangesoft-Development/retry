@@ -11,41 +11,42 @@ use Orangesoft\Retry\Sleeper\DummySleeper;
 
 class RetryTest extends TestCase
 {
-    public function testCreateFromDefault(): void
+    public function testCreate(): void
     {
-        $retry = Retry::createFromDefault();
+        $retry = Retry::create();
 
+        $this->assertInstanceOf(Retry::class, $retry);
         $this->assertInstanceOf(RetryInterface::class, $retry);
     }
 
     public function testWithMaxAttempts(): void
     {
-        $retry = Retry::createFromDefault()->withMaxAttempts(5);
+        $retry = Retry::create()->withMaxAttempts(5);
 
-        $this->assertInstanceOf(RetryInterface::class, $retry);
+        $this->assertInstanceOf(Retry::class, $retry);
     }
 
     public function testWithExceptionClassifier(): void
     {
         $exceptionClassifier = new ExceptionClassifier();
 
-        $retry = Retry::createFromDefault()->withExceptionClassifier($exceptionClassifier);
+        $retry = Retry::create()->withExceptionClassifier($exceptionClassifier);
 
-        $this->assertInstanceOf(RetryInterface::class, $retry);
+        $this->assertInstanceOf(Retry::class, $retry);
     }
 
     public function testWithSleeper(): void
     {
         $sleeper = new DummySleeper();
 
-        $retry = Retry::createFromDefault()->withSleeper($sleeper);
+        $retry = Retry::create()->withSleeper($sleeper);
 
-        $this->assertInstanceOf(RetryInterface::class, $retry);
+        $this->assertInstanceOf(Retry::class, $retry);
     }
 
     public function testCallSignature(): void
     {
-        $retry = Retry::createFromDefault()->withMaxAttempts(1);
+        $retry = Retry::create()->withMaxAttempts(1);
 
         $args = [
             'value1',
@@ -62,7 +63,7 @@ class RetryTest extends TestCase
 
     public function testCallSuccess(): void
     {
-        $retry = Retry::createFromDefault();
+        $retry = Retry::create();
 
         $result = $retry->call(function () {
             return 42;
@@ -89,7 +90,10 @@ class RetryTest extends TestCase
 
         try {
             $retry->call(function () use (&$counter) {
-                throw new \RuntimeException('OK', $counter++);
+                $testMessage = 'OK';
+                $testCode = $counter++;
+
+                throw new \RuntimeException($testMessage, $testCode);
             });
         } catch (\RuntimeException $e) {
             $this->assertSame('OK', $e->getMessage());
