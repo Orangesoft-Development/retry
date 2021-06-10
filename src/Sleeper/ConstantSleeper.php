@@ -2,7 +2,7 @@
 
 namespace Orangesoft\Retry\Sleeper;
 
-class ConstantSleeper implements SleeperInterface
+final class ConstantSleeper implements SleeperInterface
 {
     /**
      * @var int

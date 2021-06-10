@@ -2,7 +2,7 @@
 
 namespace Orangesoft\Retry\ExceptionClassifier;
 
-class ExceptionClassifier implements ExceptionClassifierInterface
+final class ExceptionClassifier implements ExceptionClassifierInterface
 {
     /**
      * @var string[]

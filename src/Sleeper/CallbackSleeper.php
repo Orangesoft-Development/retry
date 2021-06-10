@@ -2,7 +2,7 @@
 
 namespace Orangesoft\Retry\Sleeper;
 
-class CallbackSleeper implements SleeperInterface
+final class CallbackSleeper implements SleeperInterface
 {
     /**
      * @var callable

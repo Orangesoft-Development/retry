@@ -12,15 +12,15 @@ class RetryBuilder
     /**
      * @var int
      */
-    private $maxAttempts;
+    protected $maxAttempts;
     /**
      * @var ExceptionClassifierInterface
      */
-    private $exceptionClassifier;
+    protected $exceptionClassifier;
     /**
      * @var SleeperInterface
      */
-    private $sleeper;
+    protected $sleeper;
 
     public function __construct()
     {
