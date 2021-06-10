@@ -7,40 +7,40 @@ class ExceptionClassifier implements ExceptionClassifierInterface
     /**
      * @var string[]
      */
-    private $exceptionTypes;
+    private $exceptionClasses;
 
     /**
-     * @param string[] $exceptionTypes
+     * @param string[] $exceptionClasses
      */
-    public function __construct(array $exceptionTypes = [])
+    public function __construct(array $exceptionClasses = [])
     {
-        if (0 === count($exceptionTypes)) {
-            $exceptionTypes = [
+        if (0 === count($exceptionClasses)) {
+            $exceptionClasses = [
                 \Error::class,
                 \Exception::class,
             ];
         }
 
-        foreach ($exceptionTypes as $exceptionType) {
-            $this->add($exceptionType);
+        foreach ($exceptionClasses as $exceptionClass) {
+            $this->add($exceptionClass);
         }
     }
 
-    private function add(string $exceptionType): void
+    private function add(string $exceptionClass): void
     {
-        if (!class_exists($exceptionType) || !is_a($exceptionType, \Throwable::class, true)) {
+        if (!class_exists($exceptionClass) || !is_a($exceptionClass, \Throwable::class, true)) {
             throw new \InvalidArgumentException(
-                sprintf('Exception type must be a class that exists and can be thrown, "%s" given.', get_debug_type($exceptionType))
+                sprintf('Exception class must be a class that exists and can be thrown, "%s" given.', get_debug_type($exceptionClass))
             );
         }
 
-        $this->exceptionTypes[] = $exceptionType;
+        $this->exceptionClasses[] = $exceptionClass;
     }
 
     public function classify(\Throwable $throwable): bool
     {
-        foreach ($this->exceptionTypes as $exceptionType) {
-            if ($throwable instanceof $exceptionType) {
+        foreach ($this->exceptionClasses as $exceptionClass) {
+            if ($throwable instanceof $exceptionClass) {
                 return true;
             }
         }
