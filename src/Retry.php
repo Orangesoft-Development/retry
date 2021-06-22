@@ -56,7 +56,7 @@ final class Retry implements RetryInterface
     }
 
     /**
-     * @param int|callable|\Closure $delay
+     * @param int|callable $delay
      *
      * @return self
      */
@@ -66,7 +66,7 @@ final class Retry implements RetryInterface
 
         if (is_int($delay)) {
             $retry->sleeper = new ConstantSleeper($delay);
-        } elseif (is_callable($delay) || $delay instanceof \Closure) {
+        } elseif (is_callable($delay)) {
             $retry->sleeper = new CallbackSleeper($delay);
         } else {
             throw new \InvalidArgumentException(
