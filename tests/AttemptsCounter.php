@@ -2,19 +2,17 @@
 
 namespace Orangesoft\Retry\Tests;
 
-use Orangesoft\Retry\Sleeper\SleeperInterface;
-
-class SleepAttemptsCounter implements SleeperInterface
+class AttemptsCounter
 {
-    private $attemptsCount = 0;
+    private $allAttempts = 0;
 
-    public function sleep(int $attempt): void
+    public function __invoke(int $currentAttempt)
     {
-        $this->attemptsCount = $attempt;
+        $this->allAttempts = $currentAttempt;
     }
 
-    public function getAttemptsCount(): int
+    public function getAllAttempts(): int
     {
-        return $this->attemptsCount;
+        return $this->allAttempts;
     }
 }

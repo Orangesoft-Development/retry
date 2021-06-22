@@ -14,27 +14,21 @@ class RetryBuilderTest extends TestCase
 {
     public function testMaxAttempts(): void
     {
-        $builder = (new RetryBuilder())
-            ->setMaxAttempts(5)
-        ;
+        $builder = (new RetryBuilder())->setMaxAttempts(3);
 
-        $this->assertSame(5, $builder->getMaxAttempts());
+        $this->assertSame(3, $builder->getMaxAttempts());
     }
 
     public function testExceptionClassifier(): void
     {
-        $builder = (new RetryBuilder())
-            ->setExceptionClassifier(new ExceptionClassifier())
-        ;
+        $builder = (new RetryBuilder())->setExceptionClassifier(new ExceptionClassifier());
 
         $this->assertInstanceOf(ExceptionClassifierInterface::class, $builder->getExceptionClassifier());
     }
 
     public function testSleeper(): void
     {
-        $builder = (new RetryBuilder())
-            ->setSleeper(new DummySleeper())
-        ;
+        $builder = (new RetryBuilder())->setSleeper(new DummySleeper());
 
         $this->assertInstanceOf(SleeperInterface::class, $builder->getSleeper());
     }
@@ -42,7 +36,7 @@ class RetryBuilderTest extends TestCase
     public function testBuild(): void
     {
         $builder = (new RetryBuilder())
-            ->setMaxAttempts(5)
+            ->setMaxAttempts(3)
             ->setExceptionClassifier(new ExceptionClassifier())
             ->setSleeper(new DummySleeper())
         ;
