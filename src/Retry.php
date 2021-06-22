@@ -2,7 +2,10 @@
 
 namespace Orangesoft\Retry;
 
+use Orangesoft\Retry\ExceptionClassifier\ExceptionClassifier;
 use Orangesoft\Retry\ExceptionClassifier\ExceptionClassifierInterface;
+use Orangesoft\Retry\Sleeper\CallbackSleeper;
+use Orangesoft\Retry\Sleeper\ConstantSleeper;
 use Orangesoft\Retry\Sleeper\SleeperInterface;
 
 final class Retry implements RetryInterface
@@ -34,29 +37,42 @@ final class Retry implements RetryInterface
         return new Retry($builder);
     }
 
-    public function withMaxAttempts(int $maxAttempts): self
+    public function maxTries(int $maxTries): self
     {
         $retry = clone $this;
 
-        $retry->maxAttempts = $maxAttempts;
+        $retry->maxAttempts = $maxTries;
 
         return $retry;
     }
 
-    public function withExceptionClassifier(ExceptionClassifierInterface $exceptionClassifier): self
+    public function forException(string ...$exceptionClasses): self
     {
         $retry = clone $this;
 
-        $retry->exceptionClassifier = $exceptionClassifier;
+        $retry->exceptionClassifier = new ExceptionClassifier($exceptionClasses);
 
         return $retry;
     }
 
-    public function withSleeper(SleeperInterface $sleeper): self
+    /**
+     * @param int|callable|\Closure $delay
+     *
+     * @return self
+     */
+    public function withDelay($delay): self
     {
         $retry = clone $this;
 
-        $retry->sleeper = $sleeper;
+        if (is_int($delay)) {
+            $retry->sleeper = new ConstantSleeper($delay);
+        } elseif (is_callable($delay) || $delay instanceof \Closure) {
+            $retry->sleeper = new CallbackSleeper($delay);
+        } else {
+            throw new \InvalidArgumentException(
+                sprintf('Delay must be int or callable, "%s" given.', get_debug_type($delay))
+            );
+        }
 
         return $retry;
     }

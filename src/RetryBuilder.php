@@ -24,7 +24,7 @@ class RetryBuilder
 
     public function __construct()
     {
-        $this->maxAttempts = 5;
+        $this->maxAttempts = 3;
         $this->exceptionClassifier = new ExceptionClassifier();
         $this->sleeper = new DummySleeper();
     }
