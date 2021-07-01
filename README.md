@@ -20,7 +20,7 @@ This package requires PHP 7.2 or later.
 
 ## Quick usage
 
-By default max attempts is 3, ExceptionClassifier catch all exceptions and Sleeper is disabled:
+By default max attempts is 5, ExceptionClassifier catch all exceptions and Sleeper is disabled:
 
 ```php
 <?php
@@ -31,23 +31,23 @@ use Orangesoft\Retry\ExceptionClassifier\ExceptionClassifier;
 use Orangesoft\Retry\Sleeper\DummySleeper;
 
 $retry = (new RetryBuilder())
-    ->setMaxAttempts(3)
+    ->setMaxAttempts(5)
     ->setExceptionClassifier(new ExceptionClassifier())
     ->setSleeper(new DummySleeper())
     ->build()
 ;
 ```
 
-You can also get an instance in a easier way with default options:
+Quick instance with default options:
 
 ```php
 $retry = Retry::create();
 ```
 
-Put the code in a callback function and call it:
+Put your business logic in a callback function and call it:
 
 ```php
-$result = $retry->call(function (): int {
+$retry->call(function (): int {
     $random = mt_rand(1, 10);
         
     if (0 === $random % 2) {
@@ -64,11 +64,11 @@ Change options before call:
 $retry
     ->maxTries(1)
     ->forException(\RuntimeException::class)
-    ->withDelay(500)
+    ->withDelay(1000)
     ->call(function () {
         throw new \RuntimeException();
     })
 ;
 ```
 
-Delay must be int as milliseconds or callable.
+Delay must be integer as milliseconds or callable.
