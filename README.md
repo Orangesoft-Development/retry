@@ -48,7 +48,7 @@ Put your business logic in a callback function and call it:
 
 ```php
 $retry->call(function (): int {
-    $random = mt_rand(1, 10);
+    $random = mt_rand(5, 10);
         
     if (0 === $random % 2) {
         throw new \RuntimeException();
