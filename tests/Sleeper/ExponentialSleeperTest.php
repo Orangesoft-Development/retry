@@ -10,16 +10,16 @@ class ExponentialSleeperTest extends TestCase
 {
     public function testSleep(): void
     {
-        $sleeper = new ExponentialSleeper(500, 2);
+        $sleeper = new ExponentialSleeper(100, 2);
 
         $timer = new Timer();
 
         $timer->start();
 
-        $sleeper->sleep(2);
+        $sleeper->sleep(4);
 
         $milliseconds = $timer->stop() * 1000;
 
-        $this->assertGreaterThanOrEqual(2000, $milliseconds);
+        $this->assertGreaterThanOrEqual(1600, $milliseconds);
     }
 }

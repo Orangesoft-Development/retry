@@ -10,16 +10,16 @@ class ConstantSleeperTest extends TestCase
 {
     public function testSleep(): void
     {
-        $sleeper = new ConstantSleeper(500);
+        $sleeper = new ConstantSleeper(100);
 
         $timer = new Timer();
 
         $timer->start();
 
-        $sleeper->sleep(0);
+        $sleeper->sleep(4);
 
         $milliseconds = $timer->stop() * 1000;
 
-        $this->assertGreaterThanOrEqual(500, $milliseconds);
+        $this->assertGreaterThanOrEqual(100, $milliseconds);
     }
 }

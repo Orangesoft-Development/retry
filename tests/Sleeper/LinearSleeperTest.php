@@ -10,16 +10,16 @@ class LinearSleeperTest extends TestCase
 {
     public function testSleep(): void
     {
-        $sleeper = new LinearSleeper(500);
+        $sleeper = new LinearSleeper(100);
 
         $timer = new Timer();
 
         $timer->start();
 
-        $sleeper->sleep(2);
+        $sleeper->sleep(4);
 
         $milliseconds = $timer->stop() * 1000;
 
-        $this->assertGreaterThanOrEqual(1500, $milliseconds);
+        $this->assertGreaterThanOrEqual(500, $milliseconds);
     }
 }

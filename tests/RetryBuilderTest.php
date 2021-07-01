@@ -14,9 +14,9 @@ class RetryBuilderTest extends TestCase
 {
     public function testMaxAttempts(): void
     {
-        $builder = (new RetryBuilder())->setMaxAttempts(3);
+        $builder = (new RetryBuilder())->setMaxAttempts(5);
 
-        $this->assertSame(3, $builder->getMaxAttempts());
+        $this->assertSame(5, $builder->getMaxAttempts());
     }
 
     public function testExceptionClassifier(): void
@@ -36,7 +36,7 @@ class RetryBuilderTest extends TestCase
     public function testBuild(): void
     {
         $builder = (new RetryBuilder())
-            ->setMaxAttempts(3)
+            ->setMaxAttempts(5)
             ->setExceptionClassifier(new ExceptionClassifier())
             ->setSleeper(new DummySleeper())
         ;

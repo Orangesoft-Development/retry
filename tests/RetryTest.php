@@ -18,7 +18,7 @@ class RetryTest extends TestCase
 
     public function testMaxTries(): void
     {
-        $retry = Retry::create()->maxTries(3);
+        $retry = Retry::create()->maxTries(5);
 
         $this->assertInstanceOf(Retry::class, $retry);
     }
@@ -35,7 +35,7 @@ class RetryTest extends TestCase
 
     public function testWithIntegerDelay(): void
     {
-        $retry = Retry::create()->withDelay(500);
+        $retry = Retry::create()->withDelay(100);
 
         $this->assertInstanceOf(Retry::class, $retry);
     }
@@ -43,7 +43,7 @@ class RetryTest extends TestCase
     public function testWithCallableDelay(): void
     {
         $retry = Retry::create()->withDelay(function (int $attempt) {
-            usleep(500 * 1000 * ($attempt + 1));
+            usleep(100 * 1000 * ($attempt + 1));
         });
 
         $this->assertInstanceOf(Retry::class, $retry);
@@ -85,7 +85,7 @@ class RetryTest extends TestCase
 
         try {
             Retry::create()
-                ->maxTries(3)
+                ->maxTries(5)
                 ->forException(\RuntimeException::class)
                 ->call(function () use (&$counter) {
                     throw new \RuntimeException('OK', $counter++);
@@ -93,7 +93,7 @@ class RetryTest extends TestCase
             ;
         } catch (\RuntimeException $e) {
             $this->assertSame('OK', $e->getMessage());
-            $this->assertSame(3, $e->getCode());
+            $this->assertSame(5, $e->getCode());
 
             throw $e;
         }
@@ -105,7 +105,7 @@ class RetryTest extends TestCase
 
         try {
             Retry::create()
-                ->maxTries(3)
+                ->maxTries(5)
                 ->forException(\RuntimeException::class)
                 ->withDelay($counter)
                 ->call(function () {
@@ -113,7 +113,7 @@ class RetryTest extends TestCase
                 })
             ;
         } catch (\RuntimeException $e) {
-            $this->assertSame(2, $counter->getAllAttempts());
+            $this->assertSame(4, $counter->getAllAttempts());
         }
     }
 }

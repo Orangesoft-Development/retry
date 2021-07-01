@@ -11,17 +11,17 @@ class CallbackSleeperTest extends TestCase
     public function testSleep(): void
     {
         $sleeper = new CallbackSleeper(function (int $attempt) {
-            usleep(500 * 1000 * ($attempt + 1));
+            usleep(100 * 1000 * ($attempt + 1));
         });
 
         $timer = new Timer();
 
         $timer->start();
 
-        $sleeper->sleep(2);
+        $sleeper->sleep(4);
 
         $milliseconds = $timer->stop() * 1000;
 
-        $this->assertGreaterThanOrEqual(1500, $milliseconds);
+        $this->assertGreaterThanOrEqual(500, $milliseconds);
     }
 }
